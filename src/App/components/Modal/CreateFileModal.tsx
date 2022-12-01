@@ -5,7 +5,7 @@ import { modalStyle } from './styles';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (fileName: string, contents: string) => boolean;
+  onSubmit: (fileName: string, contents: string) => void;
 }
 
 const CreateFileModal = ({ isOpen, onClose, onSubmit }: Props) => {
@@ -22,7 +22,9 @@ const CreateFileModal = ({ isOpen, onClose, onSubmit }: Props) => {
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
-    if (!onSubmit(fileName, content)) {
+    try {
+      onSubmit(fileName, content);
+    } catch {
       setIsError(true);
       return;
     }
@@ -66,7 +68,7 @@ const CreateFileModal = ({ isOpen, onClose, onSubmit }: Props) => {
           <Button variant="outlined" color="primary" onClick={handleOnClose}>
             Cancel
           </Button>
-          <Button type="submit" variant="contained">
+          <Button type="submit" variant="contained" disabled={fileName === ''}>
             Create
           </Button>
         </Box>

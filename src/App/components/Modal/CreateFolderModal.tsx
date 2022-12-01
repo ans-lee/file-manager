@@ -5,7 +5,7 @@ import { modalStyle } from './styles';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (folderName: string) => boolean;
+  onSubmit: (folderName: string) => void;
 }
 
 const CreateFolderModal = ({ isOpen, onClose, onSubmit }: Props) => {
@@ -17,10 +17,14 @@ const CreateFolderModal = ({ isOpen, onClose, onSubmit }: Props) => {
   };
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    if (!onSubmit(folderName)) {
+
+    try {
+      onSubmit(folderName);
+    } catch {
       setIsError(true);
       return;
     }
+
     handleOnClose();
   };
   const handleOnClose = () => {
@@ -51,7 +55,11 @@ const CreateFolderModal = ({ isOpen, onClose, onSubmit }: Props) => {
           <Button variant="outlined" color="primary" onClick={handleOnClose}>
             Cancel
           </Button>
-          <Button type="submit" variant="contained">
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={folderName === ''}
+          >
             Create
           </Button>
         </Box>

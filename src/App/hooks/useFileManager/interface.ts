@@ -20,6 +20,6 @@ export interface FileManager {
   fileMap: FileMap;
   changeFolder: (folderId: string) => void;
   goPrevFolder: () => void;
-  createNewFolder: (folderName: string) => boolean;
-  createNewFile: (fileName: string, content: string) => boolean;
+  createNewFolder: (folderName: string) => void;
+  createNewFile: (fileName: string, content: string) => void;
 }

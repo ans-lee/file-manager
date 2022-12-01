@@ -43,9 +43,9 @@ export const useFileManager = (): FileManager => {
     }
   };
 
-  const createNewFolder = (folderName: string): boolean => {
+  const createNewFolder = (folderName: string) => {
     if (folderName in fileMap) {
-      return false;
+      throw Error('A file or folder with the same name already exists');
     }
 
     const newFolder: FolderNode = {
@@ -64,12 +64,11 @@ export const useFileManager = (): FileManager => {
     };
 
     setFileMap(newFileMap);
-    return true;
   };
 
-  const createNewFile = (fileName: string, content: string): boolean => {
+  const createNewFile = (fileName: string, content: string) => {
     if (fileName in fileMap) {
-      return false;
+      throw Error('A file or folder with the same name already exists');
     }
 
     const newFile: FileNode = {
@@ -88,7 +87,6 @@ export const useFileManager = (): FileManager => {
     };
 
     setFileMap(newFileMap);
-    return true;
   };
 
   return {

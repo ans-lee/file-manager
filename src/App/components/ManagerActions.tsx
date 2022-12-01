@@ -4,8 +4,8 @@ import CreateFileModal from './Modal/CreateFileModal';
 import CreateFolderModal from './Modal/CreateFolderModal';
 
 interface Props {
-  createNewFile: (fileName: string, content: string) => boolean;
-  createNewFolder: (folderName: string) => boolean;
+  createNewFile: (fileName: string, content: string) => void;
+  createNewFolder: (folderName: string) => void;
 }
 
 export const ManagerActions = ({ createNewFile, createNewFolder }: Props) => {
