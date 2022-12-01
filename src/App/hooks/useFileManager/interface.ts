@@ -1,25 +1,25 @@
 export interface Node {
   parentId?: string;
-  fileType: 'file' | 'directory';
+  fileType: 'file' | 'folder';
 }
 
 export interface FileNode extends Node {
   content: string;
 }
 
-export interface DirectoryNode extends Node {
+export interface FolderNode extends Node {
   childrenIds: string[];
 }
 
 export interface FileMap {
-  [id: string]: FileNode | DirectoryNode;
+  [id: string]: FileNode | FolderNode;
 }
 
 export interface FileManager {
-  currentDirId: string;
+  currentFolderId: string;
   fileMap: FileMap;
-  changeDirectory: (directory: string) => void;
-  goPrevDirectory: () => void;
+  changeFolder: (folderId: string) => void;
+  goPrevFolder: () => void;
   createNewFolder: (folderName: string) => boolean;
   createNewFile: (fileName: string, content: string) => boolean;
 }

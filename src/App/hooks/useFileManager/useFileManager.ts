@@ -1,41 +1,41 @@
 import { useState } from 'react';
-import { DirectoryNode, FileManager, FileMap, FileNode } from './interface';
+import { FolderNode, FileManager, FileMap, FileNode } from './interface';
 
 export const useFileManager = (): FileManager => {
   const [fileMap, setFileMap] = useState<FileMap>({
-    root: { childrenIds: ['Documents', 'Pictures'], fileType: 'directory' },
+    root: { childrenIds: ['Documents', 'Pictures'], fileType: 'folder' },
     Documents: {
       parentId: 'root',
       childrenIds: ['help.jpeg'],
-      fileType: 'directory',
+      fileType: 'folder',
     },
     Pictures: {
       parentId: 'root',
       childrenIds: ['cat.jpeg'],
-      fileType: 'directory',
+      fileType: 'folder',
     },
     'help.jpeg': { parentId: 'Documents', content: ':((((', fileType: 'file' },
     'cat.jpeg': { parentId: 'Pictures', content: ':((((', fileType: 'file' },
   });
-  const [currentDirId, setCurrentDirId] = useState('root');
+  const [currentFolderId, setCurrentFolderId] = useState('root');
   const [parentId, setParentId] = useState<string | undefined>(undefined);
 
-  const changeDirectory = (directory: string) => {
-    setParentId(currentDirId);
+  const changeFolder = (folderId: string) => {
+    setParentId(currentFolderId);
 
-    if (!(directory in fileMap)) {
-      throw Error('directory should exist in the fileMap');
+    if (!(folderId in fileMap)) {
+      throw Error('folder should exist in the fileMap');
     }
 
-    setCurrentDirId(directory);
+    setCurrentFolderId(folderId);
   };
 
-  const goPrevDirectory = () => {
+  const goPrevFolder = () => {
     if (typeof parentId === 'undefined') {
       throw Error('parentId should not be undefined');
     }
 
-    setCurrentDirId(parentId);
+    setCurrentFolderId(parentId);
 
     const newParentId = fileMap[parentId].parentId;
     if (typeof newParentId !== 'undefined') {
@@ -48,19 +48,19 @@ export const useFileManager = (): FileManager => {
       return false;
     }
 
-    const newDir: DirectoryNode = {
-      parentId: currentDirId,
+    const newFolder: FolderNode = {
+      parentId: currentFolderId,
       childrenIds: [],
-      fileType: 'directory',
+      fileType: 'folder',
     };
-    const parentDir = fileMap[currentDirId] as DirectoryNode;
+    const parentFolder = fileMap[currentFolderId] as FolderNode;
 
     // Copy over the file map as mutations are not valid, then add the new folder
     const newFileMap = { ...fileMap };
-    newFileMap[folderName] = newDir;
-    newFileMap[currentDirId] = {
-      ...parentDir,
-      childrenIds: [...parentDir.childrenIds, folderName],
+    newFileMap[folderName] = newFolder;
+    newFileMap[currentFolderId] = {
+      ...parentFolder,
+      childrenIds: [...parentFolder.childrenIds, folderName],
     };
 
     setFileMap(newFileMap);
@@ -73,18 +73,18 @@ export const useFileManager = (): FileManager => {
     }
 
     const newFile: FileNode = {
-      parentId: currentDirId,
+      parentId: currentFolderId,
       content,
       fileType: 'file',
     };
-    const parentDir = fileMap[currentDirId] as DirectoryNode;
+    const parentFolder = fileMap[currentFolderId] as FolderNode;
 
     // Copy over the file map as mutations are not valid, then add the new file
     const newFileMap = { ...fileMap };
     newFileMap[fileName] = newFile;
-    newFileMap[currentDirId] = {
-      ...parentDir,
-      childrenIds: [...parentDir.childrenIds, fileName],
+    newFileMap[currentFolderId] = {
+      ...parentFolder,
+      childrenIds: [...parentFolder.childrenIds, fileName],
     };
 
     setFileMap(newFileMap);
@@ -92,10 +92,10 @@ export const useFileManager = (): FileManager => {
   };
 
   return {
-    currentDirId,
+    currentFolderId: currentFolderId,
     fileMap,
-    changeDirectory,
-    goPrevDirectory,
+    changeFolder,
+    goPrevFolder,
     createNewFolder,
     createNewFile,
   };

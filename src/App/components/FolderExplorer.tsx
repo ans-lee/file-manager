@@ -1,34 +1,34 @@
 import { ChangeEvent, useState } from 'react';
 import { Box, Button, TextField } from '@mui/material';
 import {
-  DirectoryNode,
+  FolderNode,
   FileNode,
   FileManager,
 } from 'App/hooks/useFileManager/interface';
 import FileContentsModal from './Modal/FileContentsModal';
-import DirectoryItems from './DirectoryItems';
+import FolderGrid from './FolderGrid';
 
-interface DirectoryFile {
+export interface FolderItem {
   name: string;
-  isDirectory: boolean;
+  isFolder: boolean;
 }
 
 interface Props {
   fileManager: FileManager;
 }
 
-const DirectoryView = ({ fileManager }: Props) => {
+const FolderExplorer = ({ fileManager }: Props) => {
   const [isFileOpen, setIsFileOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState({ name: '', content: '' });
   const [searchText, setSearchText] = useState('');
-  const [filteredItems, setFiltered] = useState<DirectoryFile[]>([]);
+  const [filteredItems, setFiltered] = useState<FolderItem[]>([]);
 
-  const dirItems: DirectoryFile[] = (
-    fileManager.fileMap[fileManager.currentDirId] as DirectoryNode
+  const folderItems: FolderItem[] = (
+    fileManager.fileMap[fileManager.currentFolderId] as FolderNode
   ).childrenIds.map((item) =>
-    fileManager.fileMap[item].fileType === 'directory'
-      ? { name: item, isDirectory: true }
-      : { name: item, isDirectory: false }
+    fileManager.fileMap[item].fileType === 'folder'
+      ? { name: item, isFolder: true }
+      : { name: item, isFolder: false }
   );
 
   const handleDoubleClick = (itemId: string) => {
@@ -36,8 +36,8 @@ const DirectoryView = ({ fileManager }: Props) => {
     setFiltered([]);
 
     let item = fileManager.fileMap[itemId];
-    if (item.fileType === 'directory') {
-      fileManager.changeDirectory(itemId);
+    if (item.fileType === 'folder') {
+      fileManager.changeFolder(itemId);
     } else {
       item = item as FileNode;
       setSelectedFile({ name: itemId, content: item.content });
@@ -49,7 +49,7 @@ const DirectoryView = ({ fileManager }: Props) => {
     setSearchText(value);
 
     if (value !== '') {
-      setFiltered(dirItems.filter((item) => item.name.includes(value)));
+      setFiltered(folderItems.filter((item) => item.name.includes(value)));
     } else {
       setFiltered([]);
     }
@@ -60,8 +60,8 @@ const DirectoryView = ({ fileManager }: Props) => {
       <Box display="flex" width="100%" gap={2}>
         <Button
           variant="text"
-          onClick={fileManager.goPrevDirectory}
-          disabled={fileManager.currentDirId === 'root'}
+          onClick={fileManager.goPrevFolder}
+          disabled={fileManager.currentFolderId === 'root'}
         >
           Back
         </Button>
@@ -76,13 +76,13 @@ const DirectoryView = ({ fileManager }: Props) => {
         />
       </Box>
       {filteredItems.length > 0 || searchText !== '' ? (
-        <DirectoryItems
-          directoryFiles={filteredItems}
+        <FolderGrid
+          folderFiles={filteredItems}
           handleDoubleClick={handleDoubleClick}
         />
       ) : (
-        <DirectoryItems
-          directoryFiles={dirItems}
+        <FolderGrid
+          folderFiles={folderItems}
           handleDoubleClick={handleDoubleClick}
         />
       )}
@@ -96,4 +96,4 @@ const DirectoryView = ({ fileManager }: Props) => {
   );
 };
 
-export default DirectoryView;
+export default FolderExplorer;

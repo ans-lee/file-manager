@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import CurrentDir from 'App/components/DirectoryView';
+import FolderExplorer from 'App/components/FolderExplorer';
 import { ManagerActions } from 'App/components/ManagerActions';
 import useFileManager from 'App/hooks/useFileManager';
 
@@ -14,7 +14,7 @@ const FileManagerContainer = () => {
       gap={2}
     >
       <ManagerActions fileManager={fileManager} />
-      <CurrentDir fileManager={fileManager} />
+      <FolderExplorer fileManager={fileManager} />
     </Box>
   );
 };

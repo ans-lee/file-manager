@@ -1,24 +1,20 @@
 import { Grid } from '@mui/material';
 import FileItem from './FileItem';
-import FolderItem from './FolderItem';
-
-interface DirectoryFile {
-  name: string;
-  isDirectory: boolean;
-}
+import { FolderItem } from './FolderExplorer';
+import FolderCard from './FolderCard';
 
 interface Props {
-  directoryFiles: DirectoryFile[];
+  folderFiles: FolderItem[];
   handleDoubleClick: (itemId: string) => void;
 }
 
-const DirectoryItems = ({ directoryFiles, handleDoubleClick }: Props) => {
+const FolderGrid = ({ folderFiles, handleDoubleClick }: Props) => {
   return (
     <Grid container spacing={2} columns={6} height={500} marginTop={2}>
-      {directoryFiles.map((item, i) => (
+      {folderFiles.map((item, i) => (
         <Grid item xs={1} key={i}>
-          {item.isDirectory ? (
-            <FolderItem
+          {item.isFolder ? (
+            <FolderCard
               name={item.name}
               onDoubleClick={() => handleDoubleClick(item.name)}
             />
@@ -34,4 +30,4 @@ const DirectoryItems = ({ directoryFiles, handleDoubleClick }: Props) => {
   );
 };
 
-export default DirectoryItems;
+export default FolderGrid;

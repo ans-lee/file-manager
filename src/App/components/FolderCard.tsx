@@ -6,7 +6,7 @@ interface Props {
   onDoubleClick: () => void;
 }
 
-const FolderItem = ({ name, onDoubleClick }: Props) => {
+const FolderCard = ({ name, onDoubleClick }: Props) => {
   return (
     <Box onDoubleClick={onDoubleClick}>
       <FolderIcon color="primary" fontSize="large" />
@@ -15,4 +15,4 @@ const FolderItem = ({ name, onDoubleClick }: Props) => {
   );
 };
 
-export default FolderItem;
+export default FolderCard;

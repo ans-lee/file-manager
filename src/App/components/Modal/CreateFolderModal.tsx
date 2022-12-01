@@ -44,7 +44,7 @@ const CreateFolderModal = ({ isOpen, onClose, onSubmit }: Props) => {
             error={isError}
             helperText={
               isError
-                ? 'A file or directory with the same name already exists'
+                ? 'A file or folder with the same name already exists'
                 : ''
             }
           />
