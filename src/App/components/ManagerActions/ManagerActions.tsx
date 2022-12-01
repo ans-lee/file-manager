@@ -18,16 +18,15 @@ export const ManagerActions = ({ fileManager }: Props) => {
       fileManager.currentDirId
     ] as Directory;
 
-    /*
-    const newFileMap = fileManager.fileMap;
+    // Copy over the file map as mutations are not valid, then add the new folder
+    const newFileMap = { ...fileManager.fileMap };
     newFileMap[folderName] = newDir;
     newFileMap[fileManager.currentDirId] = {
       ...parentDir,
       childrenIds: [...parentDir.childrenIds, folderName],
     };
-    */
 
-    fileManager.setFileMap({ ...fileManager.fileMap, folderName: newDir });
+    fileManager.setFileMap(newFileMap);
   };
 
   const handleCreateNewFile = (fileName: string, content: string) => {
@@ -36,14 +35,15 @@ export const ManagerActions = ({ fileManager }: Props) => {
       fileManager.currentDirId
     ] as Directory;
 
-    const newFileMap = fileManager.fileMap;
+    // Copy over the file map as mutations are not valid, then add the new file
+    const newFileMap = { ...fileManager.fileMap };
     newFileMap[fileName] = newFile;
     newFileMap[fileManager.currentDirId] = {
       ...parentDir,
       childrenIds: [...parentDir.childrenIds, fileName],
     };
 
-    fileManager.setFileMap({ ...fileManager.fileMap, fileName: newFile });
+    fileManager.setFileMap(newFileMap);
   };
 
   return (
