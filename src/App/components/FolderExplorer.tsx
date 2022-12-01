@@ -18,15 +18,17 @@ interface Props {
 }
 
 const FolderExplorer = ({ fileManager }: Props) => {
+  const { fileMap, currentFolderId, changeFolder, goPrevFolder } = fileManager;
+
   const [isFileOpen, setIsFileOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState({ name: '', content: '' });
   const [searchText, setSearchText] = useState('');
   const [filteredItems, setFiltered] = useState<FolderItem[]>([]);
 
   const folderItems: FolderItem[] = (
-    fileManager.fileMap[fileManager.currentFolderId] as FolderNode
+    fileMap[currentFolderId] as FolderNode
   ).childrenIds.map((item) =>
-    fileManager.fileMap[item].fileType === 'folder'
+    fileMap[item].fileType === 'folder'
       ? { name: item, isFolder: true }
       : { name: item, isFolder: false }
   );
@@ -35,9 +37,9 @@ const FolderExplorer = ({ fileManager }: Props) => {
     setSearchText('');
     setFiltered([]);
 
-    let item = fileManager.fileMap[itemId];
+    let item = fileMap[itemId];
     if (item.fileType === 'folder') {
-      fileManager.changeFolder(itemId);
+      changeFolder(itemId);
     } else {
       item = item as FileNode;
       setSelectedFile({ name: itemId, content: item.content });
@@ -60,8 +62,8 @@ const FolderExplorer = ({ fileManager }: Props) => {
       <Box display="flex" width="100%" gap={2}>
         <Button
           variant="text"
-          onClick={fileManager.goPrevFolder}
-          disabled={fileManager.currentFolderId === 'root'}
+          onClick={goPrevFolder}
+          disabled={currentFolderId === 'root'}
         >
           Back
         </Button>

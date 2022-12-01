@@ -13,7 +13,10 @@ const FileManagerContainer = () => {
       justifyContent="center"
       gap={2}
     >
-      <ManagerActions fileManager={fileManager} />
+      <ManagerActions
+        createNewFile={fileManager.createNewFile}
+        createNewFolder={fileManager.createNewFolder}
+      />
       <FolderExplorer fileManager={fileManager} />
     </Box>
   );

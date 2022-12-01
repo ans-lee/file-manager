@@ -1,15 +1,14 @@
 import { Box, Button } from '@mui/material';
-import { FileManager } from 'App/hooks/useFileManager/interface';
 import { useState } from 'react';
 import CreateFileModal from './Modal/CreateFileModal';
 import CreateFolderModal from './Modal/CreateFolderModal';
 
 interface Props {
-  fileManager: FileManager;
+  createNewFile: (fileName: string, content: string) => boolean;
+  createNewFolder: (folderName: string) => boolean;
 }
 
-export const ManagerActions = ({ fileManager }: Props) => {
-  const { createNewFile, createNewFolder } = fileManager;
+export const ManagerActions = ({ createNewFile, createNewFolder }: Props) => {
   const [isNewFileModalOpen, setIsNewFileModalOpen] = useState(false);
   const [isNewFolderModalOpen, setIsNewFolderModalOpen] = useState(false);
 
