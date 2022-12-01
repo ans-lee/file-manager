@@ -17,6 +17,7 @@ export interface FileMap {
 export interface FileManager {
   currentDirId: string;
   fileMap: FileMap;
-  setCurrentDirId: Dispatch<SetStateAction<string>>;
+  changeDirectory: (directory: string) => void;
+  goPrevDirectory: () => void;
   setFileMap: Dispatch<SetStateAction<FileMap>>;
 }

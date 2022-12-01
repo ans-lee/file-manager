@@ -10,6 +10,36 @@ export const useFileManager = (): FileManager => {
     'cat.jpeg': { parentId: 'Pictures', content: ':((((' },
   });
   const [currentDirId, setCurrentDirId] = useState('root');
+  const [parentId, setParentId] = useState<string | undefined>(undefined);
 
-  return { currentDirId, fileMap, setCurrentDirId, setFileMap };
+  const changeDirectory = (directory: string) => {
+    setParentId(currentDirId);
+
+    if (!(directory in fileMap)) {
+      throw Error('directory should exist in the fileMap');
+    }
+
+    setCurrentDirId(directory);
+  };
+
+  const goPrevDirectory = () => {
+    if (typeof parentId === 'undefined') {
+      throw Error('parentId should not be undefined');
+    }
+
+    setCurrentDirId(parentId);
+
+    const newParentId = fileMap[parentId].parentId;
+    if (typeof newParentId !== 'undefined') {
+      setParentId(newParentId);
+    }
+  };
+
+  return {
+    currentDirId,
+    fileMap,
+    changeDirectory,
+    goPrevDirectory,
+    setFileMap,
+  };
 };
