@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { Grid, TextField } from '@mui/material';
+import { Box, Button, Grid, TextField } from '@mui/material';
 import {
   DirectoryNode,
   FileNode,
@@ -58,16 +58,25 @@ const CurrentDir = ({ fileManager }: Props) => {
 
   return (
     <>
-      <TextField
-        id="search"
-        placeholder="Search..."
-        value={searchText}
-        onChange={handleFileNameInput}
-        sx={{
-          width: '100%',
-        }}
-      />
-      <Grid container spacing={2} columns={6} height={500}>
+      <Box display="flex" width="100%" gap={2}>
+        <Button
+          variant="text"
+          onClick={fileManager.goPrevDirectory}
+          disabled={fileManager.currentDirId === 'root'}
+        >
+          Back
+        </Button>
+        <TextField
+          id="search"
+          placeholder="Search..."
+          value={searchText}
+          onChange={handleFileNameInput}
+          sx={{
+            width: '100%',
+          }}
+        />
+      </Box>
+      <Grid container spacing={2} columns={6} height={500} marginTop={2}>
         {filteredItems.length > 0 || searchText !== ''
           ? filteredItems.map((item, i) => (
               <Grid item xs={1} key={i}>
