@@ -1,5 +1,6 @@
+import { TextField } from '@mui/material';
 import { Directory, FileManager } from 'App/hooks/useFileManager/interface';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import FileContentsModal from '../Modal/FileContentsModal';
 
 interface Props {
@@ -9,12 +10,16 @@ interface Props {
 const CurrentDir = ({ fileManager }: Props) => {
   const [isFileOpen, setIsFileOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState({ name: '', content: '' });
+  const [searchText, setSearchText] = useState('');
+  const [filteredItems, setFiltered] = useState<string[]>([]);
 
-  const currentDirItems = (
-    fileManager.fileMap[fileManager.currentDirId] as Directory
-  ).childrenIds;
+  const dirItems = (fileManager.fileMap[fileManager.currentDirId] as Directory)
+    .childrenIds;
 
   const handleDoubleClick = (itemId: string) => {
+    setSearchText('');
+    setFiltered([]);
+
     const item = fileManager.fileMap[itemId];
     if ('childrenIds' in item) {
       fileManager.changeDirectory(itemId);
@@ -23,15 +28,37 @@ const CurrentDir = ({ fileManager }: Props) => {
       setIsFileOpen(true);
     }
   };
+  const handleFileNameInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchText(value);
+
+    if (value !== '') {
+      setFiltered(dirItems.filter((item) => item.includes(value)));
+    } else {
+      setFiltered([]);
+    }
+  };
 
   return (
     <>
+      <TextField
+        id="search"
+        label="Search"
+        value={searchText}
+        onChange={handleFileNameInput}
+      />
       <div>
-        {currentDirItems.map((item, i) => (
-          <p key={i} onDoubleClick={() => handleDoubleClick(item)}>
-            {item}
-          </p>
-        ))}
+        {filteredItems.length > 0
+          ? filteredItems.map((item, i) => (
+              <p key={i} onDoubleClick={() => handleDoubleClick(item)}>
+                {item}
+              </p>
+            ))
+          : dirItems.map((item, i) => (
+              <p key={i} onDoubleClick={() => handleDoubleClick(item)}>
+                {item}
+              </p>
+            ))}
       </div>
       <FileContentsModal
         isOpen={isFileOpen}
