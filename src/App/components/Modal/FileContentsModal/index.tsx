@@ -16,7 +16,13 @@ const FileContentsModal = ({ isOpen, onClose, fileName, content }: Props) => {
           {fileName}
         </Typography>
         <Typography variant="body1" component="p">
-          {content}
+          {content !== '' ? (
+            content
+          ) : (
+            <Typography color="GrayText" fontStyle="italic">
+              No content in this file
+            </Typography>
+          )}
         </Typography>
         <Button variant="outlined" color="primary" onClick={onClose}>
           Close
