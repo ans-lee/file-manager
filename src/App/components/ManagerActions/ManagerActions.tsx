@@ -1,10 +1,11 @@
-import './App.css';
-import CurrentDir from 'components/CurrentDir';
-import { Directory, useFileManager } from 'hooks/useFileMap/useFileMap';
+import { Box, Button } from '@mui/material';
+import { Directory, FileManager } from 'App/hooks/useFileManager/interface';
 
-function App() {
-  const fileManager = useFileManager();
+interface Props {
+  fileManager: FileManager;
+}
 
+export const ManagerActions = ({ fileManager }: Props) => {
   const handleCreateNewFolder = () => {
     const newDir = { parentId: fileManager.currentDirId, childrenIds: [] };
     const parentDir = fileManager.fileMap[
@@ -22,11 +23,13 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <button onClick={handleCreateNewFolder}>Create New Folder</button>
-      <CurrentDir fileManager={fileManager} />
-    </div>
+    <Box display="flex">
+      <Button variant="outlined" onClick={handleCreateNewFolder}>
+        Create New Folder
+      </Button>
+      <Button variant="outlined" onClick={handleCreateNewFolder}>
+        Create New File
+      </Button>
+    </Box>
   );
-}
-
-export default App;
+};

@@ -1,4 +1,4 @@
-import { Directory, FileManager } from 'hooks/useFileMap/useFileMap';
+import { Directory, FileManager } from 'App/hooks/useFileManager/interface';
 
 interface Props {
   fileManager: FileManager;
@@ -8,7 +8,6 @@ const CurrentDir = ({ fileManager }: Props) => {
   const currentDirItems = (
     fileManager.fileMap[fileManager.currentDirId] as Directory
   ).childrenIds;
-  console.log(fileManager.currentDirId);
 
   const handleDoubleClick = (itemId: string) => {
     const item = fileManager.fileMap[itemId];
