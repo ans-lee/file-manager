@@ -57,7 +57,9 @@ const CreateFileModal = ({ isOpen, onClose, onSubmit }: Props) => {
           />
           <TextField
             id="newFileContent"
-            label="Content..."
+            placeholder="Content"
+            multiline
+            rows={10}
             value={content}
             onChange={handleContentsInput}
           />

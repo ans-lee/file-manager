@@ -7,4 +7,7 @@ export const modalStyle = {
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 3,
 };
