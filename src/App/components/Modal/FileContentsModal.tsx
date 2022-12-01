@@ -1,5 +1,5 @@
 import { Box, Button, Modal, Typography } from '@mui/material';
-import { modalStyle } from '../styles';
+import { modalStyle } from './styles';
 
 interface Props {
   isOpen: boolean;

@@ -1,8 +1,8 @@
 import { Box, Button } from '@mui/material';
 import { FileManager } from 'App/hooks/useFileManager/interface';
 import { useState } from 'react';
-import CreateFileModal from '../Modal/CreateFileModal';
-import CreateFolderModal from '../Modal/CreateFolderModal';
+import CreateFileModal from './Modal/CreateFileModal';
+import CreateFolderModal from './Modal/CreateFolderModal';
 
 interface Props {
   fileManager: FileManager;

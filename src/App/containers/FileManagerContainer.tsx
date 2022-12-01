@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
-import CurrentDir from 'App/components/CurrentDir';
-import { ManagerActions } from 'App/components/ManagerActions/ManagerActions';
+import CurrentDir from 'App/components/DirectoryView';
+import { ManagerActions } from 'App/components/ManagerActions';
 import useFileManager from 'App/hooks/useFileManager';
 
 const FileManagerContainer = () => {

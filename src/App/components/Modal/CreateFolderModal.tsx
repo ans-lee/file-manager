@@ -1,67 +1,52 @@
 import { Box, Button, Modal, TextField, Typography } from '@mui/material';
 import { ChangeEvent, SyntheticEvent, useState } from 'react';
-import { modalStyle } from '../styles';
+import { modalStyle } from './styles';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (fileName: string, contents: string) => boolean;
+  onSubmit: (folderName: string) => boolean;
 }
 
-const CreateFileModal = ({ isOpen, onClose, onSubmit }: Props) => {
-  const [fileName, setFileName] = useState('');
-  const [content, setContent] = useState('');
+const CreateFolderModal = ({ isOpen, onClose, onSubmit }: Props) => {
+  const [folderName, setFolderName] = useState('');
   const [isError, setIsError] = useState(false);
 
-  const handleFileNameInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setFileName(e.target.value);
-  };
-  const handleContentsInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setContent(e.target.value);
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setFolderName(e.target.value);
   };
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-
-    if (!onSubmit(fileName, content)) {
+    if (!onSubmit(folderName)) {
       setIsError(true);
       return;
     }
-
     handleOnClose();
   };
   const handleOnClose = () => {
     setIsError(false);
-    setFileName('');
-    setContent('');
+    setFolderName('');
     onClose();
   };
 
   return (
-    <Modal open={isOpen} onClose={onClose}>
+    <Modal open={isOpen} onClose={handleOnClose}>
       <form onSubmit={handleSubmit}>
         <Box sx={modalStyle}>
           <Typography variant="h5" component="h2">
-            New File
+            New Folder
           </Typography>
           <TextField
-            id="newFileName"
+            id="newFolderName"
             label="Name"
-            value={fileName}
-            onChange={handleFileNameInput}
+            value={folderName}
+            onChange={handleInput}
             error={isError}
             helperText={
               isError
                 ? 'A file or directory with the same name already exists'
                 : ''
             }
-          />
-          <TextField
-            id="newFileContent"
-            placeholder="Content"
-            multiline
-            rows={10}
-            value={content}
-            onChange={handleContentsInput}
           />
           <Button variant="outlined" color="primary" onClick={handleOnClose}>
             Cancel
@@ -75,4 +60,4 @@ const CreateFileModal = ({ isOpen, onClose, onSubmit }: Props) => {
   );
 };
 
-export default CreateFileModal;
+export default CreateFolderModal;
