@@ -1,7 +1,8 @@
-import { Box, TextField } from '@mui/material';
-import { Directory, FileManager } from 'App/hooks/useFileManager/interface';
 import { ChangeEvent, useState } from 'react';
+import { Grid, TextField } from '@mui/material';
+import { Directory, FileManager } from 'App/hooks/useFileManager/interface';
 import FileContentsModal from '../Modal/FileContentsModal';
+import FolderItem from '../FolderItem';
 
 interface Props {
   fileManager: FileManager;
@@ -43,26 +44,32 @@ const CurrentDir = ({ fileManager }: Props) => {
     <>
       <TextField
         id="search"
-        label="Search"
+        placeholder="Search..."
         value={searchText}
         onChange={handleFileNameInput}
         sx={{
           width: '100%',
         }}
       />
-      <Box>
-        {filteredItems.length > 0
+      <Grid container spacing={2} columns={6}>
+        {filteredItems.length > 0 || searchText !== ''
           ? filteredItems.map((item, i) => (
-              <p key={i} onDoubleClick={() => handleDoubleClick(item)}>
-                {item}
-              </p>
+              <Grid item xs={1} key={i}>
+                <FolderItem
+                  name={item}
+                  onDoubleClick={() => handleDoubleClick(item)}
+                />
+              </Grid>
             ))
           : dirItems.map((item, i) => (
-              <p key={i} onDoubleClick={() => handleDoubleClick(item)}>
-                {item}
-              </p>
+              <Grid item xs={1} key={i}>
+                <FolderItem
+                  name={item}
+                  onDoubleClick={() => handleDoubleClick(item)}
+                />
+              </Grid>
             ))}
-      </Box>
+      </Grid>
       <FileContentsModal
         isOpen={isFileOpen}
         onClose={() => setIsFileOpen(false)}
