@@ -1,17 +1,20 @@
 import { Dispatch, SetStateAction } from 'react';
 
-export interface File {
-  content: string;
+export interface Node {
   parentId?: string;
+  fileType: 'file' | 'directory';
 }
 
-export interface Directory {
-  parentId?: string;
+export interface FileNode extends Node {
+  content: string;
+}
+
+export interface DirectoryNode extends Node {
   childrenIds: string[];
 }
 
 export interface FileMap {
-  [id: string]: File | Directory;
+  [id: string]: FileNode | DirectoryNode;
 }
 
 export interface FileManager {

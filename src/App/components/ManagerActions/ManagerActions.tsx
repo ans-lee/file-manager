@@ -1,5 +1,9 @@
 import { Box, Button } from '@mui/material';
-import { Directory, FileManager } from 'App/hooks/useFileManager/interface';
+import {
+  DirectoryNode,
+  FileManager,
+  FileNode,
+} from 'App/hooks/useFileManager/interface';
 import { useState } from 'react';
 import CreateFileModal from '../Modal/CreateFileModal';
 import CreateFolderModal from '../Modal/CreateFolderModal';
@@ -13,10 +17,14 @@ export const ManagerActions = ({ fileManager }: Props) => {
   const [isNewFolderModalOpen, setIsNewFolderModalOpen] = useState(false);
 
   const handleCreateNewFolder = (folderName: string) => {
-    const newDir = { parentId: fileManager.currentDirId, childrenIds: [] };
+    const newDir: DirectoryNode = {
+      parentId: fileManager.currentDirId,
+      childrenIds: [],
+      fileType: 'directory',
+    };
     const parentDir = fileManager.fileMap[
       fileManager.currentDirId
-    ] as Directory;
+    ] as DirectoryNode;
 
     // Copy over the file map as mutations are not valid, then add the new folder
     const newFileMap = { ...fileManager.fileMap };
@@ -30,10 +38,14 @@ export const ManagerActions = ({ fileManager }: Props) => {
   };
 
   const handleCreateNewFile = (fileName: string, content: string) => {
-    const newFile = { parentId: fileManager.currentDirId, content };
+    const newFile: FileNode = {
+      parentId: fileManager.currentDirId,
+      content,
+      fileType: 'file',
+    };
     const parentDir = fileManager.fileMap[
       fileManager.currentDirId
-    ] as Directory;
+    ] as DirectoryNode;
 
     // Copy over the file map as mutations are not valid, then add the new file
     const newFileMap = { ...fileManager.fileMap };

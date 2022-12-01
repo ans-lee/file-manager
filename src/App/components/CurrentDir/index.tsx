@@ -1,6 +1,10 @@
 import { ChangeEvent, useState } from 'react';
 import { Grid, TextField } from '@mui/material';
-import { Directory, FileManager } from 'App/hooks/useFileManager/interface';
+import {
+  DirectoryNode,
+  FileNode,
+  FileManager,
+} from 'App/hooks/useFileManager/interface';
 import FileContentsModal from '../Modal/FileContentsModal';
 import FolderItem from '../FolderItem';
 
@@ -14,17 +18,19 @@ const CurrentDir = ({ fileManager }: Props) => {
   const [searchText, setSearchText] = useState('');
   const [filteredItems, setFiltered] = useState<string[]>([]);
 
-  const dirItems = (fileManager.fileMap[fileManager.currentDirId] as Directory)
-    .childrenIds;
+  const dirItems = (
+    fileManager.fileMap[fileManager.currentDirId] as DirectoryNode
+  ).childrenIds;
 
   const handleDoubleClick = (itemId: string) => {
     setSearchText('');
     setFiltered([]);
 
-    const item = fileManager.fileMap[itemId];
-    if ('childrenIds' in item) {
+    let item = fileManager.fileMap[itemId];
+    if (item.fileType === 'directory') {
       fileManager.changeDirectory(itemId);
     } else {
+      item = item as FileNode;
       setSelectedFile({ name: itemId, content: item.content });
       setIsFileOpen(true);
     }
