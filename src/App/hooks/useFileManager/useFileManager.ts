@@ -3,10 +3,13 @@ import { FolderNode, FileManager, FileMap, FileNode } from './interface';
 
 export const useFileManager = (): FileManager => {
   const [fileMap, setFileMap] = useState<FileMap>({
-    root: { childrenIds: ['Documents', 'Pictures'], fileType: 'folder' },
+    root: {
+      childrenIds: ['Documents', 'Pictures', 'file1'],
+      fileType: 'folder',
+    },
     Documents: {
       parentId: 'root',
-      childrenIds: ['help.jpeg'],
+      childrenIds: ['help.txt'],
       fileType: 'folder',
     },
     Pictures: {
@@ -14,8 +17,17 @@ export const useFileManager = (): FileManager => {
       childrenIds: ['cat.jpeg'],
       fileType: 'folder',
     },
-    'help.jpeg': { parentId: 'Documents', content: ':((((', fileType: 'file' },
-    'cat.jpeg': { parentId: 'Pictures', content: ':((((', fileType: 'file' },
+    file1: {
+      parentId: 'root',
+      content: 'Hello, this is a file',
+      fileType: 'file',
+    },
+    'help.txt': {
+      parentId: 'Documents',
+      content: 'Hello world!',
+      fileType: 'file',
+    },
+    'cat.jpeg': { parentId: 'Pictures', content: 'cat :)', fileType: 'file' },
   });
   const [currentFolderId, setCurrentFolderId] = useState('root');
   const [parentId, setParentId] = useState<string | undefined>(undefined);
