@@ -12,6 +12,7 @@ const FileManagerContainer = () => {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
+      gap={2}
     >
       <ManagerActions fileManager={fileManager} />
       <CurrentDir fileManager={fileManager} />

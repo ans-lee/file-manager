@@ -48,13 +48,14 @@ export const ManagerActions = ({ fileManager }: Props) => {
 
   return (
     <>
-      <Box display="flex">
+      <Box display="flex" width="100%">
         <Button variant="outlined" onClick={() => setIsNewFileModalOpen(true)}>
           Create New File
         </Button>
         <Button
           variant="outlined"
           onClick={() => setIsNewFolderModalOpen(true)}
+          sx={{ marginLeft: 2 }}
         >
           Create New Folder
         </Button>

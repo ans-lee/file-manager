@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import { Directory, FileManager } from 'App/hooks/useFileManager/interface';
 import { ChangeEvent, useState } from 'react';
 import FileContentsModal from '../Modal/FileContentsModal';
@@ -46,8 +46,11 @@ const CurrentDir = ({ fileManager }: Props) => {
         label="Search"
         value={searchText}
         onChange={handleFileNameInput}
+        sx={{
+          width: '100%',
+        }}
       />
-      <div>
+      <Box>
         {filteredItems.length > 0
           ? filteredItems.map((item, i) => (
               <p key={i} onDoubleClick={() => handleDoubleClick(item)}>
@@ -59,7 +62,7 @@ const CurrentDir = ({ fileManager }: Props) => {
                 {item}
               </p>
             ))}
-      </div>
+      </Box>
       <FileContentsModal
         isOpen={isFileOpen}
         onClose={() => setIsFileOpen(false)}
