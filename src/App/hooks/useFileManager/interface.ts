@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
-
 export interface Node {
   parentId?: string;
   fileType: 'file' | 'directory';
@@ -22,5 +20,6 @@ export interface FileManager {
   fileMap: FileMap;
   changeDirectory: (directory: string) => void;
   goPrevDirectory: () => void;
-  setFileMap: Dispatch<SetStateAction<FileMap>>;
+  createNewFolder: (folderName: string) => void;
+  createNewFile: (fileName: string, content: string) => void;
 }

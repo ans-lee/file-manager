@@ -1,9 +1,5 @@
 import { Box, Button } from '@mui/material';
-import {
-  DirectoryNode,
-  FileManager,
-  FileNode,
-} from 'App/hooks/useFileManager/interface';
+import { FileManager } from 'App/hooks/useFileManager/interface';
 import { useState } from 'react';
 import CreateFileModal from '../Modal/CreateFileModal';
 import CreateFolderModal from '../Modal/CreateFolderModal';
@@ -13,50 +9,9 @@ interface Props {
 }
 
 export const ManagerActions = ({ fileManager }: Props) => {
+  const { createNewFile, createNewFolder } = fileManager;
   const [isNewFileModalOpen, setIsNewFileModalOpen] = useState(false);
   const [isNewFolderModalOpen, setIsNewFolderModalOpen] = useState(false);
-
-  const handleCreateNewFolder = (folderName: string) => {
-    const newDir: DirectoryNode = {
-      parentId: fileManager.currentDirId,
-      childrenIds: [],
-      fileType: 'directory',
-    };
-    const parentDir = fileManager.fileMap[
-      fileManager.currentDirId
-    ] as DirectoryNode;
-
-    // Copy over the file map as mutations are not valid, then add the new folder
-    const newFileMap = { ...fileManager.fileMap };
-    newFileMap[folderName] = newDir;
-    newFileMap[fileManager.currentDirId] = {
-      ...parentDir,
-      childrenIds: [...parentDir.childrenIds, folderName],
-    };
-
-    fileManager.setFileMap(newFileMap);
-  };
-
-  const handleCreateNewFile = (fileName: string, content: string) => {
-    const newFile: FileNode = {
-      parentId: fileManager.currentDirId,
-      content,
-      fileType: 'file',
-    };
-    const parentDir = fileManager.fileMap[
-      fileManager.currentDirId
-    ] as DirectoryNode;
-
-    // Copy over the file map as mutations are not valid, then add the new file
-    const newFileMap = { ...fileManager.fileMap };
-    newFileMap[fileName] = newFile;
-    newFileMap[fileManager.currentDirId] = {
-      ...parentDir,
-      childrenIds: [...parentDir.childrenIds, fileName],
-    };
-
-    fileManager.setFileMap(newFileMap);
-  };
 
   return (
     <>
@@ -75,12 +30,12 @@ export const ManagerActions = ({ fileManager }: Props) => {
       <CreateFileModal
         isOpen={isNewFileModalOpen}
         onClose={() => setIsNewFileModalOpen(false)}
-        onSubmit={handleCreateNewFile}
+        onSubmit={createNewFile}
       />
       <CreateFolderModal
         isOpen={isNewFolderModalOpen}
         onClose={() => setIsNewFolderModalOpen(false)}
-        onSubmit={handleCreateNewFolder}
+        onSubmit={createNewFolder}
       />
     </>
   );

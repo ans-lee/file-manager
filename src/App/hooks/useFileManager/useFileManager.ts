@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FileManager, FileMap } from './interface';
+import { DirectoryNode, FileManager, FileMap, FileNode } from './interface';
 
 export const useFileManager = (): FileManager => {
   const [fileMap, setFileMap] = useState<FileMap>({
@@ -43,11 +43,50 @@ export const useFileManager = (): FileManager => {
     }
   };
 
+  const createNewFolder = (folderName: string) => {
+    const newDir: DirectoryNode = {
+      parentId: currentDirId,
+      childrenIds: [],
+      fileType: 'directory',
+    };
+    const parentDir = fileMap[currentDirId] as DirectoryNode;
+
+    // Copy over the file map as mutations are not valid, then add the new folder
+    const newFileMap = { ...fileMap };
+    newFileMap[folderName] = newDir;
+    newFileMap[currentDirId] = {
+      ...parentDir,
+      childrenIds: [...parentDir.childrenIds, folderName],
+    };
+
+    setFileMap(newFileMap);
+  };
+
+  const createNewFile = (fileName: string, content: string) => {
+    const newFile: FileNode = {
+      parentId: currentDirId,
+      content,
+      fileType: 'file',
+    };
+    const parentDir = fileMap[currentDirId] as DirectoryNode;
+
+    // Copy over the file map as mutations are not valid, then add the new file
+    const newFileMap = { ...fileMap };
+    newFileMap[fileName] = newFile;
+    newFileMap[currentDirId] = {
+      ...parentDir,
+      childrenIds: [...parentDir.childrenIds, fileName],
+    };
+
+    setFileMap(newFileMap);
+  };
+
   return {
     currentDirId,
     fileMap,
     changeDirectory,
     goPrevDirectory,
-    setFileMap,
+    createNewFolder,
+    createNewFile,
   };
 };
