@@ -9,20 +9,20 @@ interface Props {
 }
 
 export const ManagerActions = ({ fileManager }: Props) => {
-  const handleCreateNewFolder = () => {
+  const handleCreateNewFolder = (folderName: string) => {
     const newDir = { parentId: fileManager.currentDirId, childrenIds: [] };
     const parentDir = fileManager.fileMap[
       fileManager.currentDirId
     ] as Directory;
 
     const newFileMap = fileManager.fileMap;
-    newFileMap['newFile'] = newDir;
+    newFileMap[folderName] = newDir;
     newFileMap[fileManager.currentDirId] = {
       ...parentDir,
-      childrenIds: [...parentDir.childrenIds, 'newFile'],
+      childrenIds: [...parentDir.childrenIds, folderName],
     };
 
-    fileManager.setFileMap({ ...fileManager.fileMap, newFile: newDir });
+    fileManager.setFileMap({ ...fileManager.fileMap, folderName: newDir });
   };
 
   const [isNewFileModalOpen, setIsNewFileModalOpen] = useState(false);
@@ -32,13 +32,13 @@ export const ManagerActions = ({ fileManager }: Props) => {
     <>
       <Box display="flex">
         <Button variant="outlined" onClick={() => setIsNewFileModalOpen(true)}>
-          Create New Folder
+          Create New File
         </Button>
         <Button
           variant="outlined"
           onClick={() => setIsNewFolderModalOpen(true)}
         >
-          Create New File
+          Create New Folder
         </Button>
       </Box>
       <CreateFileModal
@@ -48,7 +48,7 @@ export const ManagerActions = ({ fileManager }: Props) => {
       <CreateFolderModal
         isOpen={isNewFolderModalOpen}
         onClose={() => setIsNewFolderModalOpen(false)}
-        onSubmit={() => handleCreateNewFolder()}
+        onSubmit={handleCreateNewFolder}
       />
     </>
   );
