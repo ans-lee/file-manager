@@ -5,12 +5,13 @@ import { modalStyle } from '../styles';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (fileName: string, contents: string) => void;
+  onSubmit: (fileName: string, contents: string) => boolean;
 }
 
 const CreateFileModal = ({ isOpen, onClose, onSubmit }: Props) => {
   const [fileName, setFileName] = useState('');
   const [content, setContent] = useState('');
+  const [isError, setIsError] = useState(false);
 
   const handleFileNameInput = (e: ChangeEvent<HTMLInputElement>) => {
     setFileName(e.target.value);
@@ -20,10 +21,16 @@ const CreateFileModal = ({ isOpen, onClose, onSubmit }: Props) => {
   };
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    onSubmit(fileName, content);
+
+    if (!onSubmit(fileName, content)) {
+      setIsError(true);
+      return;
+    }
+
     handleOnClose();
   };
   const handleOnClose = () => {
+    setIsError(false);
     setFileName('');
     setContent('');
     onClose();
@@ -41,6 +48,12 @@ const CreateFileModal = ({ isOpen, onClose, onSubmit }: Props) => {
             label="Name"
             value={fileName}
             onChange={handleFileNameInput}
+            error={isError}
+            helperText={
+              isError
+                ? 'A file or directory with the same name already exists'
+                : ''
+            }
           />
           <TextField
             id="newFileContent"
@@ -48,7 +61,7 @@ const CreateFileModal = ({ isOpen, onClose, onSubmit }: Props) => {
             value={content}
             onChange={handleContentsInput}
           />
-          <Button variant="outlined" color="secondary" onClick={handleOnClose}>
+          <Button variant="outlined" color="primary" onClick={handleOnClose}>
             Cancel
           </Button>
           <Button type="submit" variant="contained">

@@ -9,7 +9,7 @@ interface Props {
 const FileItem = ({ name, onDoubleClick }: Props) => {
   return (
     <Box onDoubleClick={onDoubleClick}>
-      <InsertDriveFileIcon color="secondary" fontSize="large" />
+      <InsertDriveFileIcon color="primary" fontSize="large" />
       <p>{name}</p>
     </Box>
   );

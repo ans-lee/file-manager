@@ -18,7 +18,7 @@ const FileContentsModal = ({ isOpen, onClose, fileName, content }: Props) => {
         <Typography variant="body1" component="p">
           {content}
         </Typography>
-        <Button variant="outlined" color="secondary" onClick={onClose}>
+        <Button variant="outlined" color="primary" onClick={onClose}>
           Close
         </Button>
       </Box>

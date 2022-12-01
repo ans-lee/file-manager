@@ -1,13 +1,20 @@
 import GlobalStyle from './styled.default';
 import FileManagerContainer from './containers/FileManagerContainer';
-import { Container, StyledEngineProvider } from '@mui/material';
+import { Box, Container, StyledEngineProvider } from '@mui/material';
 
 const App = () => {
   return (
     <StyledEngineProvider injectFirst>
       <GlobalStyle />
       <Container>
-        <FileManagerContainer />
+        <Box
+          height="100vh"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+        >
+          <FileManagerContainer />
+        </Box>
       </Container>
     </StyledEngineProvider>
   );

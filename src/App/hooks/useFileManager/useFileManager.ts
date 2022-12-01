@@ -43,7 +43,11 @@ export const useFileManager = (): FileManager => {
     }
   };
 
-  const createNewFolder = (folderName: string) => {
+  const createNewFolder = (folderName: string): boolean => {
+    if (folderName in fileMap) {
+      return false;
+    }
+
     const newDir: DirectoryNode = {
       parentId: currentDirId,
       childrenIds: [],
@@ -60,9 +64,14 @@ export const useFileManager = (): FileManager => {
     };
 
     setFileMap(newFileMap);
+    return true;
   };
 
-  const createNewFile = (fileName: string, content: string) => {
+  const createNewFile = (fileName: string, content: string): boolean => {
+    if (fileName in fileMap) {
+      return false;
+    }
+
     const newFile: FileNode = {
       parentId: currentDirId,
       content,
@@ -79,6 +88,7 @@ export const useFileManager = (): FileManager => {
     };
 
     setFileMap(newFileMap);
+    return true;
   };
 
   return {

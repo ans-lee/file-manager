@@ -7,7 +7,6 @@ const FileManagerContainer = () => {
   const fileManager = useFileManager();
   return (
     <Box
-      height="100vh"
       display="flex"
       flexDirection="column"
       alignItems="center"

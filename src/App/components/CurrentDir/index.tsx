@@ -7,20 +7,30 @@ import {
 } from 'App/hooks/useFileManager/interface';
 import FileContentsModal from '../Modal/FileContentsModal';
 import FolderItem from '../FolderItem';
+import FileItem from '../FileItem';
 
 interface Props {
   fileManager: FileManager;
+}
+
+interface DirectoryItems {
+  name: string;
+  isDirectory: boolean;
 }
 
 const CurrentDir = ({ fileManager }: Props) => {
   const [isFileOpen, setIsFileOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState({ name: '', content: '' });
   const [searchText, setSearchText] = useState('');
-  const [filteredItems, setFiltered] = useState<string[]>([]);
+  const [filteredItems, setFiltered] = useState<DirectoryItems[]>([]);
 
-  const dirItems = (
+  const dirItems: DirectoryItems[] = (
     fileManager.fileMap[fileManager.currentDirId] as DirectoryNode
-  ).childrenIds;
+  ).childrenIds.map((item) =>
+    fileManager.fileMap[item].fileType === 'directory'
+      ? { name: item, isDirectory: true }
+      : { name: item, isDirectory: false }
+  );
 
   const handleDoubleClick = (itemId: string) => {
     setSearchText('');
@@ -40,7 +50,7 @@ const CurrentDir = ({ fileManager }: Props) => {
     setSearchText(value);
 
     if (value !== '') {
-      setFiltered(dirItems.filter((item) => item.includes(value)));
+      setFiltered(dirItems.filter((item) => item.name.includes(value)));
     } else {
       setFiltered([]);
     }
@@ -57,22 +67,36 @@ const CurrentDir = ({ fileManager }: Props) => {
           width: '100%',
         }}
       />
-      <Grid container spacing={2} columns={6}>
+      <Grid container spacing={2} columns={6} height={500}>
         {filteredItems.length > 0 || searchText !== ''
           ? filteredItems.map((item, i) => (
               <Grid item xs={1} key={i}>
-                <FolderItem
-                  name={item}
-                  onDoubleClick={() => handleDoubleClick(item)}
-                />
+                {item.isDirectory ? (
+                  <FolderItem
+                    name={item.name}
+                    onDoubleClick={() => handleDoubleClick(item.name)}
+                  />
+                ) : (
+                  <FileItem
+                    name={item.name}
+                    onDoubleClick={() => handleDoubleClick(item.name)}
+                  />
+                )}
               </Grid>
             ))
           : dirItems.map((item, i) => (
               <Grid item xs={1} key={i}>
-                <FolderItem
-                  name={item}
-                  onDoubleClick={() => handleDoubleClick(item)}
-                />
+                {item.isDirectory ? (
+                  <FolderItem
+                    name={item.name}
+                    onDoubleClick={() => handleDoubleClick(item.name)}
+                  />
+                ) : (
+                  <FileItem
+                    name={item.name}
+                    onDoubleClick={() => handleDoubleClick(item.name)}
+                  />
+                )}
               </Grid>
             ))}
       </Grid>
